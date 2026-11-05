@@ -1,5 +1,5 @@
-package com.servillantas.asistente.repository;
-import com.servillantas.asistente.domain.Conversacion;
+package com.servillantas.asistente.conversacion.repository;
+import com.servillantas.asistente.conversacion.entity.Conversacion;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;

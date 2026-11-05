@@ -1,4 +1,4 @@
-package com.servillantas.asistente.domain;
+package com.servillantas.asistente.conversacion.entity;
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
