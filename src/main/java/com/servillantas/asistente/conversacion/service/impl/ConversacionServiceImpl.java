@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 @Service public class ConversacionServiceImpl implements ConversacionService {
+    private static final Set<String> SORT_FIELDS = Set.of("createdAt", "updatedAt", "titulo");
     private final ConversacionRepository conversaciones; private final MensajeRepository mensajes;
     private final ConversacionMapper mapper;
     public ConversacionServiceImpl(ConversacionRepository conversaciones, MensajeRepository mensajes,
@@ -22,6 +23,11 @@ import org.springframework.web.server.ResponseStatusException;
     }
     @Override @Transactional(readOnly = true)
     public Page<ConversacionResponse> listar(UUID usuarioId, Pageable p) {
+        p.getSort().forEach(order -> {
+            if (!SORT_FIELDS.contains(order.getProperty()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Campo de ordenamiento inválido: " + order.getProperty());
+        });
         Pageable segura = PageRequest.of(Math.max(0, p.getPageNumber()), Math.min(Math.max(1, p.getPageSize()), 100), p.getSort());
         return conversaciones.findByUsuarioId(usuarioId, segura).map(mapper::toResponse);
     }
